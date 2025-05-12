@@ -1,0 +1,17 @@
+import pandas as pd
+from textblob import TextBlob
+import matplotlib.pyplot as plt
+
+# Load dataset
+df = pd.read_csv("reviews.csv")  # should contain a 'review' column
+
+# Analyze sentiment
+df['polarity'] = df['review'].apply(lambda x: TextBlob(x).sentiment.polarity)
+df['sentiment'] = df['polarity'].apply(lambda p: 'Positive' if p > 0 else ('Negative' if p < 0 else 'Neutral'))
+
+# Print counts
+print(df['sentiment'].value_counts())
+
+# Plot
+df['sentiment'].value_counts().plot(kind='bar', color=['green', 'red', 'gray'], title="Sentiment Distribution")
+plt.show()
